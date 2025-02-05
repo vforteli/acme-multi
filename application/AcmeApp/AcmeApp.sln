@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeBackend", "AcmeBackend\AcmeBackend.csproj", "{10AA8989-DC4F-4B60-AFF1-B8690620698F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeWorker", "AcmeWorker\AcmeWorker.csproj", "{13C9F806-3895-4734-A225-8E23AE6C734A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeWorkerJob", "AcmeWorkerJob\AcmeWorkerJob.csproj", "{176C7AFB-1830-4421-9221-1819AA64FAB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10AA8989-DC4F-4B60-AFF1-B8690620698F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10AA8989-DC4F-4B60-AFF1-B8690620698F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10AA8989-DC4F-4B60-AFF1-B8690620698F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10AA8989-DC4F-4B60-AFF1-B8690620698F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C9F806-3895-4734-A225-8E23AE6C734A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C9F806-3895-4734-A225-8E23AE6C734A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C9F806-3895-4734-A225-8E23AE6C734A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C9F806-3895-4734-A225-8E23AE6C734A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{176C7AFB-1830-4421-9221-1819AA64FAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{176C7AFB-1830-4421-9221-1819AA64FAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{176C7AFB-1830-4421-9221-1819AA64FAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{176C7AFB-1830-4421-9221-1819AA64FAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

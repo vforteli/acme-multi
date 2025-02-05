@@ -1,0 +1,30 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-kvname-user-msi
+spec:
+  provider: azure
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "true"
+    tenantId: {{.Values.tenantId}}
+    userAssignedIdentityID: {{.Values.azurekeyvaultsecretsproviderClientId}}
+    keyvaultName: {{.Values.tenant.keyvaultName}}
+    # Ideally all tenants should use the same secret names since we want to standardize as much as possible
+    objects: |
+      array:
+        - |
+          objectName: somesecret
+          objectType: secret
+        - |
+          objectName: sb-endpoint
+          objectType: secret
+
+  # these are not actually secrets
+  # real secrets should be read from the mounted files
+  secretObjects:
+    - secretName: backend-variables
+      data:
+        - key: sb-endpoint
+          objectName: sb-endpoint
+      type: Opaque

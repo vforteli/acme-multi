@@ -1,0 +1,8 @@
+tenant:
+  tenantName: acmeoverseas
+  keyvaultName: acmeoverseaskv
+  serviceBusNamespaceName: acmeoverseas-sbn
+  nginxName: acmeoverseas-nginx-public
+  ingressDnsLabel: acmeoverseas-onacme
+  backendServiceAccountName: acmeoverseas-backend-sa
+  workerServiceAccountName: acmeoverseas-worker-sa

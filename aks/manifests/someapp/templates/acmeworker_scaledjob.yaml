@@ -1,0 +1,61 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: azure-servicebus-auth
+spec:
+  podIdentity:
+    provider: azure-workload
+    identityId: {{.Values.kedaClientId}}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    azure.workload.identity/client-id: {{.Values.tenant.workerClientId}}
+  name: {{.Values.tenant.workerServiceAccountName}}
+
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: worker-scaledjob
+spec:
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 10
+  jobTargetRef:
+    template:
+      metadata:
+        labels:
+          app: acmeworkerjob
+          azure.workload.identity/use: "true"
+      spec:
+        serviceAccountName: {{.Values.tenant.workerServiceAccountName}}
+        restartPolicy: Never
+        nodeSelector:
+          kubernetes.io/arch: arm64
+        containers:
+          - name: acmeworker-job
+            image: {{.Values.workerScaledJobImage}}
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                cpu: 500m
+                memory: 256Mi
+            env:
+              - name: SB_ENDPOINT
+                valueFrom:
+                  secretKeyRef:
+                    name: backend-variables
+                    key: sb-endpoint
+
+  triggers:
+    - type: azure-servicebus
+      metadata:
+        queueName: something-happened # todo uh.. where from
+        namespace: {{.Values.tenant.serviceBusNamespaceName}}
+        messageCount: "100"
+      authenticationRef:
+        name: azure-servicebus-auth

@@ -1,0 +1,8 @@
+tenant:
+  tenantName: acmemegacorp
+  keyvaultName: acmemegacorpkv
+  serviceBusNamespaceName: acmemegacorp-sbn
+  nginxName: acmemegacorp-nginx-public
+  ingressDnsLabel: acmemegacorp-onacme
+  backendServiceAccountName: acmemegacorp-backend-sa
+  workerServiceAccountName: acmemegacorp-worker-sa

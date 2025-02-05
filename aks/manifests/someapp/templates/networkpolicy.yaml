@@ -1,0 +1,139 @@
+---
+# deny all traffic in namespace, except from and to kube-system
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-except-kube-system
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+
+---
+# allow ingress to backend from ingress controller
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-from-app-routing-system
+spec:
+  podSelector:
+    matchLabels:
+      app: acmebackend
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: app-routing-system
+
+---
+# allow inbound traffic from backend to worker
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-worker-ingress-from-backend
+spec:
+  podSelector:
+    matchLabels:
+      app: acmeworker
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: acmebackend
+
+---
+# allow outbound traffic from backend to worker
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-egress-to-worker
+spec:
+  podSelector:
+    matchLabels:
+      app: acmebackend
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: acmeworker
+---
+# allow outbound traffic from backend to datalake
+# uh oh... this is a bit wonky, cillium would support using names here...
+# alternatively, use a private endpoint with static ip...
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-egress-to-datalake
+spec:
+  podSelector:
+    matchLabels:
+      app: acmebackend
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: {{.Values.datalakeCidr}}
+      ports:
+        - protocol: TCP
+          port: 443
+---
+# allow outbound traffic from backend to ... everywhere, howtf do we get the ip of all the required endpoinds for login
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend-egress-to-everywhere
+spec:
+  podSelector:
+    matchLabels:
+      app: acmebackend
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0 # todo this is also not ideal...
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 5671
+
+---
+# workerjob to servicebus ... everywhere, howtf do we get the ip of all the required endpoinds for login
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-workerjob-to-everywhere
+spec:
+  podSelector:
+    matchLabels:
+      app: acmeworkerjob
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0 # todo this is also not ideal...
+      ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 5671

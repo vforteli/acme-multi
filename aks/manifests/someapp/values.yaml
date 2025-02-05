@@ -1,0 +1,14 @@
+# Azure env stuff
+tenantId: ...
+
+
+# Image versions
+backendImage: tkjfseacr.azurecr.io/acmebackend:v0.2.6
+workerImage: tkjfseacr.azurecr.io/acmeworker:v0.2.0
+workerScaledJobImage: tkjfseacr.azurecr.io/acmeworkerjob:v0.1.0
+
+
+# Firewall and network policy stuff
+datalakeCidr: 10.225.1.11/32  # privatelink static ip
+
+replicaCount: 2

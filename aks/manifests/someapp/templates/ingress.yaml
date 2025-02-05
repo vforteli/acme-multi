@@ -1,0 +1,44 @@
+apiVersion: approuting.kubernetes.azure.com/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: {{.Values.tenant.nginxName}}
+spec:
+  ingressClassName: {{.Values.tenant.nginxName}}
+  controllerNamePrefix: {{.Values.tenant.nginxName}}
+  loadBalancerAnnotations:
+    service.beta.kubernetes.io/azure-dns-label-name:
+      {{.Values.tenant.ingressDnsLabel}}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{.Values.tenant.nginxName}}
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: {{.Values.tenant.nginxName}}
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: backend-service
+                port:
+                  number: 80
+            path: /backend(/|$)(.*)
+            pathType: Prefix
+  tls:
+    - hosts:
+        - example.com
+
+          # todo just here for testing... shouldnt actually be exposed to the public internet
+          # - backend:
+          #     service:
+          #       name: worker-service
+          #       port:
+          #         number: 80
+          #   path: /worker(/|$)(.*)
+          #   pathType: Prefix

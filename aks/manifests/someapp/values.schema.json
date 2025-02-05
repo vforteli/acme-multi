@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "tenantId": {
+      "type": "string"
+    },
+    "kedaClientId": {
+      "type": "string"
+    },
+    "azurekeyvaultsecretsproviderClientId": {
+      "type": "string"
+    },
+    "tenant": {
+      "type": "object",
+      "properties": {
+        "tenantName": {
+          "type": "string"
+        },
+        "keyvaultName": {
+          "type": "string"
+        },
+        "serviceBusNamespaceName": {
+          "type": "string"
+        },
+        "nginxName": {
+          "type": "string"
+        },
+        "ingressDnsLabel": {
+          "type": "string"
+        },
+        "backendServiceAccountName": {
+          "type": "string"
+        },
+        "workerServiceAccountName": {
+          "type": "string"
+        },
+        "backendClientId": {
+          "type": "string"
+        },
+        "workerClientId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tenantName",
+        "keyvaultName",
+        "serviceBusNamespaceName",
+        "nginxName",
+        "ingressDnsLabel",
+        "backendServiceAccountName",
+        "workerServiceAccountName",
+        "backendClientId",
+        "workerClientId"
+      ]
+    }
+  },
+  "required": [
+    "tenantId",
+    "tenant",
+    "kedaClientId",
+    "azurekeyvaultsecretsproviderClientId"
+  ]
+}

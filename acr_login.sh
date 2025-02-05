@@ -1,0 +1,1 @@
+az acr login -n tkjfseacr --expose-token --output tsv --query accessToken | nerdctl login tkjfseacr.azurecr.io --username 00000000-0000-0000-0000-000000000000 --password-stdin

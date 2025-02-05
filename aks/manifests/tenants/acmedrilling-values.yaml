@@ -1,0 +1,8 @@
+tenant:
+  tenantName: acmedrilling
+  keyvaultName: acmedrillingkv
+  serviceBusNamespaceName: acmedrilling-sbn
+  nginxName: acmedrilling-nginx-public
+  ingressDnsLabel: acmedrilling-onacme
+  backendServiceAccountName: acmedrilling-backend-sa
+  workerServiceAccountName: acmedrilling-worker-sa
